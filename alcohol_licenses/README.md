@@ -5,6 +5,8 @@
 ### Done:
 * Downloading lists of alcohol licences from BIP. (`vendor/crawler`)
 * Extracting data from PDF to XLSX files. (`vendor/extractor`)
+* Importing data from XLSX/XLS files
+* Importing SIMC streets
 
 ### WIP:
 * Cleaning data - renaming streets to the SIMC convention.
