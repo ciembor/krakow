@@ -1,5 +1,6 @@
 require 'location_transformer/address_1_transformer'
 require 'location_transformer/address_2_transformer'
+
 module LocationTransformer
   class Transformer
     ABBREVIATIONS = [
@@ -17,16 +18,18 @@ module LocationTransformer
       ['Ulica', 'Ul.', 'Ul'],
       ['Aleja', 'Al.', 'Al'],
       ['Plac', 'Pl.', 'Pl'],
-    ]
+    ].freeze
 
     NOT_UNIQUE_WORDS = Street.all
       .pluck(:name_1, :name_2)
-      .flatten.compact
+      .flatten
+      .compact
       .map { |word| word.split(' ') }
       .flatten
       .tally
-      .select{ |k,v| v > 1 }
-      .map{ |k, v| k.upcase }
+      .select { |k,v| v > 1 }
+      .map { |k, v| k.upcase }
+      .freeze
 
     def initialize
       @address_1_transformer = LocationTransformer::Address1Transformer.new(
@@ -46,22 +49,26 @@ module LocationTransformer
 
         log(original_address_1, original_address_2, address_1, building_number)
 
-        if building_number
-          location.update!(
-            transformed_location: (
-              TransformedLocation.find_or_create_by!(
-                address_1: address_1,
-                building_number: building_number,
-              )
-            )
-          )
-        end
+        find_or_create_transformed_location(location, address_1, building_number)
       end
     end
 
     private
 
     attr_accessor :address_1_transformer, :address_2_transformer
+
+    def find_or_create_transformed_location(location, address_1, building_number)
+      if building_number
+        location.update!(
+          transformed_location: (
+            TransformedLocation.find_or_create_by!(
+              address_1: address_1,
+              building_number: building_number,
+            )
+          )
+        )
+      end
+    end
 
     def log(original_address_1, original_address_2, address_1, building_number)
       puts "transformed #{original_address_1} with address #{original_address_2} >>> #{address_1} with building number #{building_number}"

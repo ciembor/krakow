@@ -8,6 +8,7 @@ module LocationTransformer
         building_number = extract_number_with_letter_from_the_beginning(address_2)
       else
         nil
+        # raise
       end
     end
 
