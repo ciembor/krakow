@@ -9,22 +9,22 @@ class SpreadsheetImporter
       import_record(sheet.row(index), metadata)
     end
   end
-  
+
   def import_files(path = 'vendor/data/xlsx/*.xls*')
     Dir.glob(path).sort.each do |file|
       import_file(file)
-    end  
+    end
   end
 
-  private  
-  
+  private
+
   def import_record(record, metadata)
     reported_at = Date.new(metadata[:year], metadata[:month], metadata[:day])
     address_1 = record[1]
     address_2 = record[2]
     business_name = record[3]
     expiration_date = record[4]
-    
+
     location = Location.find_or_create_by!({
       address_1: address_1,
       address_2: address_2,
@@ -41,7 +41,7 @@ class SpreadsheetImporter
     business_cat = BusinessCategory.find_by!({
       name: metadata[:business_category]
     })
-    
+
     AlcoholLicense.create!({
       location: location,
       business: business,
@@ -49,7 +49,7 @@ class SpreadsheetImporter
       business_category: business_cat,
       reported_at: reported_at,
       expires_at: expiration_date
-    }) 
+    })
   end
 
   def get_metadata(file)
