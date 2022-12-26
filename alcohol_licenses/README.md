@@ -1,19 +1,16 @@
-# Alcohol licenses in Kraków [WIP]
+# Alcohol licenses in Kraków
 ## About
 
-This project is created in order to present historical (2010 - present) data about alcohol licenses in Kraków.
-It imports data from official Biuletyn Informacji Publicznej pdf files, hower parsing pdf files is limited (they are not rigid, it's not always formated the same way and it may change in the future as well). This is why I rely rather on XLSX and XLS files provided by the office on my request. Both type of files contain "dirty data". Project cleans them using regular expressions.
 
 ### Done:
-* Importing data from BIP webpage.
-* Importing data from XLS / XLSX.
-* Importing street names from TERC SIMC.
+* Downloading lists of alcohol licences from BIP. (`vendor/crawler`)
+* Extracting data from PDF to XLSX files. (`vendor/extractor`)
 
 ### WIP:
 * Cleaning data - renaming streets to the SIMC convention.
 * Cleaning data - renaming building addresses to the processable form.
 
-### TODO: 
+### TODO:
 * Assigning geolocation to addresses.
 * Selecting list of licenses in specific region (PostGIS Area).
 * Generate JSON and publish it in the Kaggle.
